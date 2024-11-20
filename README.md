@@ -50,7 +50,7 @@ QuickTask utilizes **Back4App** as its backend for the following:
 ## 🧩 Setup Instructions
 1. Clone the repository:
    ```bash
-   git clone https://github.com/sushanthrdy/QuickTask.git
+    git clone https://github.com/sushanthrdy/QuickTask.git
    cd QuickTask
 2. Install dependencies:
    ```bash
@@ -62,8 +62,7 @@ QuickTask utilizes **Back4App** as its backend for the following:
 ---
 
 ## 🧩 Project Structure
-
-  ```bash
+```bash
   QuickTask/  
   ├── lib/  
   │   ├── bloc/           # BLoC classes  
@@ -74,4 +73,28 @@ QuickTask utilizes **Back4App** as its backend for the following:
   │   ├── utils/           # Helper utilities  
   │   └── widgets/         # Reusable UI components  
   └── pubspec.yaml         # Project dependencies
+  ```
+---
 
+## 📸 Screenshots  
+
+_Add screenshots here to showcase the app's features._  
+
+---
+
+## 🤝 Contributing  
+
+Contributions are welcome! Please fork the repository and create a pull request.  
+To submit a pull request, follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -am 'Add feature'`).
+4. Push to the branch (`git push origin feature-name`).
+5. Create a new pull request.
+
+---
+
+## 📜 License  
+
+This project is licensed under the [Apache License 2.0](LICENSE).  
