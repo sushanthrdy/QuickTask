@@ -76,6 +76,12 @@ QuickTask utilizes **Back4App** as its backend for the following:
   ```
 ---
 
+## 📸 App Demo
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/uTW7CMKl1AE/0.jpg)](https://www.youtube.com/watch?v=uTW7CMKl1AE)
+
+---
+
 ## 📸 Screenshots  
 
 <div>
