@@ -5,6 +5,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:quick_task/network/api_response.dart';
 import 'package:quick_task/repository/user_authetication_repository.dart';
 import 'package:quick_task/utils/app_string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpBloc {
   late UserAuthenticationRepository _userAuthenticationRepository;
@@ -27,6 +28,10 @@ class SignUpBloc {
     try{
       final response = await _userAuthenticationRepository.registerUser(username, password);
       if(response.success) {
+        // Save login state in SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setString('userName', username);
         _signUpController?.sink.add(ApiResponse.success(response));
       }else{
         if(response.error?.code==-1){

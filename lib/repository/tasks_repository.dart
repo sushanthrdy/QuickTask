@@ -26,6 +26,7 @@ class TaskRepository {
       queryTodo.whereEqualTo("isCompleted", true);
     } else {
       queryTodo.whereLessThan("dueDate", DateTime.now());
+      queryTodo.whereEqualTo("isCompleted", false);
     }
     queryTodo.orderByAscending("dueDate");
     queryTodo.orderByAscending("priority");

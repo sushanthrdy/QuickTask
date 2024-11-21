@@ -322,8 +322,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     DateTime? pickedDate = await showDatePicker(
         helpText: "Select due date",
         context: context,
-        initialDate:
-            _selectedDueDate ?? DateTime.now().add(const Duration(days: 2)),
+        initialDate: DateTime.now().add(const Duration(days: 2)),
         firstDate: DateTime.now().add(const Duration(days: 2)),
         lastDate: DateTime(2050));
     if (pickedDate != null) {
