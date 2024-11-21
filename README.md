@@ -78,7 +78,19 @@ QuickTask utilizes **Back4App** as its backend for the following:
 
 ## 📸 Screenshots  
 
-_Add screenshots here to showcase the app's features._  
+<div>
+<img src="screenshots/Login.png" width="250"/>
+<img src="screenshots/Signup.png" width="250"/>
+<img src="screenshots/NoInprogress.png" width="250"/>
+<img src="screenshots/createTask.png" width="250"/>
+<img src="screenshots/createTaskFiller.png" width="250"/>
+<img src="screenshots/InProgressTasks.png" width="250"/>
+<img src="screenshots/EditMarkAsDone.png" width="250"/>
+<img src="screenshots/UpdateTaskScreen.png" width="250"/>
+<img src="screenshots/Status.png" width="250"/>
+<img src="screenshots/Logout.png" width="250"/>
+</div>
+ 
 
 ---
 
