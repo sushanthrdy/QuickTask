@@ -12,7 +12,10 @@ class TasksBloc {
   late TaskRepository _taskRepository;
 
   StreamController<ApiResponse<ParseResponse>>? _taskController;
-  StreamController<ApiResponse<List<ParseObject>?>>? _taskFetchController;
+  StreamController<ApiResponse<Map<String, dynamic>>>? _taskFetchController;
+  StreamController<int>? _inProgressCountController;
+  StreamController<int>? _completedCountController;
+  StreamController<int>? _inCompletedCountController;
 
   TasksBloc() {
     _taskRepository = TaskRepository();
@@ -20,15 +23,36 @@ class TasksBloc {
     _taskController =
     StreamController<ApiResponse<ParseResponse>>.broadcast();
     _taskFetchController =
-    StreamController<ApiResponse<List<ParseObject>?>>.broadcast();
+    StreamController<ApiResponse<Map<String, dynamic>>>.broadcast();
+    _inProgressCountController = StreamController<int>();
+    _completedCountController = StreamController<int>();
+    _inCompletedCountController = StreamController<int>();
   }
 
   Stream<ApiResponse<ParseResponse>>? getTaskResponse(){
     return _taskController?.stream as Stream<ApiResponse<ParseResponse>>;
   }
 
-  Stream<ApiResponse<List<ParseObject>?>>? getFetchTaskResponse(){
-    return _taskFetchController?.stream as Stream<ApiResponse<List<ParseObject>?>>;
+  Stream<ApiResponse<Map<String, dynamic>>>? getFetchTaskResponse(){
+    return _taskFetchController?.stream as Stream<ApiResponse<Map<String, dynamic>>>;
+  }
+
+  Stream<int>? getInProgressCount(){
+    return _inProgressCountController?.stream as Stream<int>?;
+  }
+
+  Stream<int>? getCompletedCount(){
+    return _completedCountController?.stream as Stream<int>?;
+  }
+
+  Stream<int>? getInCompleteCount(){
+    return _inCompletedCountController?.stream as Stream<int>?;
+  }
+
+  updateTaskCounts(int pendingCount,int completeCount,int inCompleteCount){
+    _inProgressCountController?.sink.add(pendingCount);
+    _inCompletedCountController?.sink.add(inCompleteCount);
+    _completedCountController?.sink.add(completeCount);
   }
 
   saveTask(TaskModel task) async{
@@ -57,15 +81,19 @@ class TasksBloc {
     _taskFetchController?.sink.add(ApiResponse.loading(AppString.loaderMessage));
     try{
       final response = await _taskRepository.fetchTasks(status);
-      if(response.success) {
-        _taskFetchController?.sink.add(ApiResponse.success(response.results as List<ParseObject>?));
+      if(response["tasks"].success) {
+        final inProgressCount = response["inProgress"] ?? 0;
+        final completedCount = response["completed"] ?? 0;
+        final inCompleteCount = response["incomplete"] ?? 0;
+        updateTaskCounts(inProgressCount, completedCount, inCompleteCount);
+        _taskFetchController?.sink.add(ApiResponse.success(response));
       }else{
-        if(response.error?.code==-1){
+        if(response["tasks"].error?.code==-1){
           _taskFetchController?.sink.add(
               ApiResponse.error(AppString.noInternetMsgWithRefresh));
         }else {
           _taskFetchController?.sink.add(
-              ApiResponse.error(response.error?.message??""+" Please try refreshing."));
+              ApiResponse.error(response["tasks"].error?.message??""+" Please try refreshing."));
         }
       }
     }on SocketException{
@@ -144,5 +172,6 @@ class TasksBloc {
   dispose(){
     _taskController?.close();
     _taskFetchController?.close();
+    _inProgressCountController?.close();
   }
 }

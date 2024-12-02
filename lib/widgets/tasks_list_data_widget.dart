@@ -8,7 +8,7 @@ import '../network/api_response.dart';
 import '../utils/utils.dart';
 
 class TasksListDataWidget extends StatelessWidget {
-  final AsyncSnapshot<ApiResponse<List<ParseObject>?>> snapshot;
+  final AsyncSnapshot<ApiResponse<Map<String, dynamic>>> snapshot;
   final String selectedStatus;
   final Function(TaskModel) onTaskItemClicked;
 
@@ -22,7 +22,7 @@ class TasksListDataWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (snapshot.hasData) {
       if (snapshot.data?.status == Status.SUCCESS) {
-        final tasks = snapshot.data?.data;
+        final tasks = (snapshot.data?.data?["tasks"] as ParseResponse).results as List<ParseObject>?;
         if (tasks != null) {
           return ListView.builder(
               itemCount: tasks.length,

@@ -14,7 +14,7 @@ class TaskRepository {
     return await newTask.save();
   }
 
-  Future<ParseResponse> fetchTasks(String status) async {
+  Future<Map<String, dynamic>> fetchTasks(String status) async {
     final username = await getUserName();
     QueryBuilder<ParseObject> queryTodo =
         QueryBuilder<ParseObject>(ParseObject('Task'));
@@ -30,7 +30,41 @@ class TaskRepository {
     }
     queryTodo.orderByAscending("dueDate");
     queryTodo.orderByAscending("priority");
-    return await queryTodo.query();
+
+    // In progress count query
+    QueryBuilder<ParseObject> queryInProgress =
+        QueryBuilder<ParseObject>(ParseObject('Task'))
+          ..whereEqualTo("userName", username)
+          ..whereGreaterThanOrEqualsTo("dueDate", DateTime.now())
+          ..whereEqualTo("isCompleted", false);
+
+    // Completed count query
+    QueryBuilder<ParseObject> queryCompleted =
+        QueryBuilder<ParseObject>(ParseObject('Task'))
+          ..whereEqualTo("userName", username)
+          ..whereEqualTo("isCompleted", true);
+
+    // Incomplete count query
+    QueryBuilder<ParseObject> queryIncomplete =
+        QueryBuilder<ParseObject>(ParseObject('Task'))
+          ..whereEqualTo("userName", username)
+          ..whereLessThan("dueDate", DateTime.now())
+          ..whereEqualTo("isCompleted", false);
+
+    // Execute all queries in parallel
+    final results = await Future.wait([
+      queryTodo.query(),
+      queryInProgress.count(),
+      queryCompleted.count(),
+      queryIncomplete.count(),
+    ]);
+
+    return {
+      "tasks": results[0], // Task data
+      "inProgress": results[1].count,
+      "completed": results[2].count,
+      "incomplete": results[3].count,
+    };
   }
 
   Future<String> getUserName() async {
