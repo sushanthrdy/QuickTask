@@ -35,15 +35,20 @@ QuickTask utilizes **Back4App** as its backend for the following:
 - **API Hooks**: Simplified interactions using REST APIs provided by Back4App.  
 - **Scalability**: Automatically scale storage and bandwidth as the app grows.  
 
-### Setting Up Back4App  
+### Setting Up Back4App and Envied
 
 1. Create an account on [Back4App](https://www.back4app.com).  
-2. Set up a Parse Server and obtain your App ID and Client Key.  
-3. Update the credentials in the app configuration:  
+2. Set up a Parse Server and obtain your App ID and Client Key.
+3. Add dependencies for envied, envied_generator, and build_runner in pubspec.yaml.
+4. Add .env file to the root directory and add App ID, client key and base url as shown below.
    ```dart  
-   const String appId = "Your_App_ID";  
-   const String clientKey = "Your_Client_Key";  
-   const String serverUrl = "https://Your_Back4App_Instance_URL";
+    KEY_APPLICATION_ID=YOUR_APP_ID
+    KEY_CLIENT_KEY=YOUR_CLIENT_KEY
+    BASE_URL=https://parseapi.back4app.com
+    ```
+5. Open terminal and run the below command
+    ```bash
+    dart run build_runner build -d
 
 ---
 
